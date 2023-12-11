@@ -14,7 +14,7 @@ int main (int argc, char *argv[]) {
 
   std::string file = argv[1];
   std::string line;
-  std::vector<int> gameIds;
+  std::vector<int> blocks_needed;
 
   int redblocks = 12;
   int greenblocks = 13;
@@ -57,29 +57,29 @@ int main (int argc, char *argv[]) {
       
       while (s >> number >> color) {
         if (color == "green") {
-          greenblocksfound = number; 
+          if (greenblocksfound < number) {
+            greenblocksfound = number; 
+          }
         } else if (color == "blue") {
-          blueblocksfound = number;
+          if (blueblocksfound < number) {
+            blueblocksfound = number;
+          }
         } else if (color == "red") {
-          redblocksfound = number;
-        }
-
-        if (greenblocksfound > greenblocks || blueblocksfound > blueblocks || redblocksfound > redblocks) {
-          possible = false;      
-          break;
+          if (redblocksfound < number) {
+            redblocksfound = number;
+          }
         }
       }
 
-      if (possible) {
-        gameIds.push_back(gameId);
-      }
+      int minimum = greenblocksfound * blueblocksfound * redblocksfound;
+      blocks_needed.push_back(minimum);
     }
   }
 
   int total = 0;
 
-  for (int i=0; i<gameIds.size(); i++) {
-    total += gameIds[i];
+  for (int i=0; i < blocks_needed.size(); i++) {
+    total += blocks_needed[i];
   }
 
   std::cout << total << std::endl;
